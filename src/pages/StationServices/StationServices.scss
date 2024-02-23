@@ -1,0 +1,47 @@
+.services {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+
+  .header {
+    display: flex;
+    justify-content: center;
+
+    .headerAlign {
+      padding: 10px;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .direction {
+      font-size: 2.25em;
+    }
+
+    .station {
+      font-size: 2.625em;
+      color: #0b6a14;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .header {
+      .direction {
+        font-size: 1.5em;
+      }
+
+      .station {
+        font-size: 2em;
+      }
+    }
+  }
+
+  .trainsContainer{
+    width: 100%;
+    padding: 15px;
+    background-color: #fff;
+    margin-top: 10px;
+  }
+  
+}
+

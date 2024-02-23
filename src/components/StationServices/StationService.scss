@@ -1,0 +1,53 @@
+.service {
+  width: 100%;
+  padding: 15px 0;
+  border-bottom: 1px solid black;
+
+  .left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .leftContainer {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .leftTop {
+      display: flex;
+      align-items: center;
+      margin-right: 0;
+
+      .time {
+        font-size: 1.5em;
+        margin-right: 5px;
+      }
+
+      .status {
+        font-size: 1.15em;
+        font-weight: bold;
+      }
+    }
+
+    .leftMiddle {
+      margin-top: 5px;
+      font-size: 1.15em;
+    }
+
+    .leftBottom {
+      margin-top: 5px;
+    }
+
+    .onTime {
+      color: green;
+    }
+
+    .late {
+      color: red;
+    }
+
+    .station {
+      color: blue;
+    }
+  }
+}
