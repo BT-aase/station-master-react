@@ -5,25 +5,35 @@ import { useEffect, useState } from "react";
 import StationSelect from "./pages/StationSelect/StationSelect";
 import stations from "./stations.json";
 import StationServices from "./pages/StationServices/StationServices";
+import ServiceDetail from "./pages/ServiceDetail/ServiceDetail";
 
 const App = () => {
   const [stationName, setStationName] = useState(() => {
-    const savedName = localStorage.getItem("stationName");
+    const savedName = sessionStorage.getItem("stationName");
     return savedName ? JSON.parse(savedName) : "";
   });
 
   const [stationCode, setStationCode] = useState(() => {
-    const savedCode = localStorage.getItem("stationCode");
+    const savedCode = sessionStorage.getItem("stationCode");
     return savedCode ? JSON.parse(savedCode) : "";
   });
 
+  const [serviceId, setServiceId] = useState(() => {
+    const savedId = sessionStorage.getItem("serviceId");
+    return savedId ? JSON.parse(savedId) : "";
+  });
+
   useEffect(() => {
-    localStorage.setItem("stationName", JSON.stringify(stationName));
+    sessionStorage.setItem("stationName", JSON.stringify(stationName));
   }, [stationName]);
 
   useEffect(() => {
-    localStorage.setItem("stationCode", JSON.stringify(stationCode));
+    sessionStorage.setItem("stationCode", JSON.stringify(stationCode));
   }, [stationCode]);
+
+  useEffect(() => {
+    sessionStorage.setItem("serviceId", JSON.stringify(serviceId));
+  }, [serviceId]);
 
   return (
     <>
@@ -49,6 +59,16 @@ const App = () => {
                 <StationServices
                   stationName={stationName}
                   stationCode={stationCode}
+                  setServiceId={setServiceId}
+                />
+              }
+            />
+            <Route
+              path="/station/:crs/service/:id"
+              element={
+                <ServiceDetail
+                  stationCode={stationCode}
+                  serviceId={serviceId}
                 />
               }
             />

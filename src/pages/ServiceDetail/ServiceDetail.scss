@@ -1,0 +1,25 @@
+.detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25px;
+
+  .header {
+    display: flex;
+    justify-content: center;
+    font-size: 2.25em;
+  }
+
+  .journeyContainer {
+    margin-top: 10px;
+  }
+
+  .journey {
+    width: 90vw;
+    max-width: 750px;
+    margin: 10px auto;
+    background-color: #fff;
+    padding: 15px;
+  }
+
+}

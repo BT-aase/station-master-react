@@ -21,6 +21,7 @@
     .station {
       font-size: 2.625em;
       color: #0b6a14;
+      font-weight: bold;
     }
   }
 
@@ -36,12 +37,19 @@
     }
   }
 
-  .trainsContainer{
-    width: 100%;
-    padding: 15px;
-    background-color: #fff;
+  .trainsContainer {
     margin-top: 10px;
   }
-  
-}
 
+  .trains {
+    width: 90vw;
+    max-width: 750px;
+    margin: 10px auto;
+    background-color: #fff;
+    padding: 15px;
+  }
+
+  .noServices {
+    font-size: 1.5em;
+  }
+}
