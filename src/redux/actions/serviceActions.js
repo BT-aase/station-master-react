@@ -13,7 +13,7 @@ export const getService = (crs, id) => {
           type: GET_SERVICE,
           payload: {
             id: id,
-            stops: data.stops,
+            service: data.service,
           },
         });
       } catch (error) {

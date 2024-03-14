@@ -11,6 +11,11 @@
   &:hover {
     background-color: aquamarine;
   }
+  
+  &:first-child {
+    border-top: 1px solid black; // Add border-top to the first .service component
+  }
+
 
   .left {
     display: flex;

@@ -2,7 +2,7 @@ import { GET_SERVICE } from "../actions/types";
 
 const initialState = {
   serviceId: "",
-  serviceStops: [],
+  service: [],
 };
 
 const serviceReducer = (state = initialState, action) => {
@@ -12,7 +12,7 @@ const serviceReducer = (state = initialState, action) => {
       return {
         ...state,
         serviceid: action.payload.id,
-        serviceStops: action.payload.stops,
+        service: action.payload.service,
       };
     }
     default:

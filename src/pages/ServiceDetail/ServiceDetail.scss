@@ -10,6 +10,12 @@
     font-size: 2.25em;
   }
 
+  @media screen and (max-width: 768px) {
+    .header {
+      font-size: 1.5em;
+    }
+  }
+
   .journeyContainer {
     margin-top: 10px;
   }
@@ -17,9 +23,7 @@
   .journey {
     width: 90vw;
     max-width: 750px;
-    margin: 10px auto;
+    height: 100%;
     background-color: #fff;
-    padding: 15px;
   }
-
 }

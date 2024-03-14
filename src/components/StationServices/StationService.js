@@ -11,7 +11,9 @@ const StationService = ({ service, setServiceId }) => {
     setServiceId(service.serviceId);
     sessionStorage.setItem(
       "selectedService",
-      JSON.stringify(`${service.departTime} to ${service.destination}`)
+      JSON.stringify(
+        `${service.departTime} ${service.origin} to ${service.destination}`
+      )
     );
     navigate(`/station/${savedCode}/service/${service.serviceId}`);
   };
