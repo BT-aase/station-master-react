@@ -35,35 +35,18 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
     },
   });
 
-  const calculateSVGHeight = (service, showPrior) => {
-    const totalHeight = service.followingStops.length * 20;
-    const additionalHeight = 30;
-
-    // If prior stops are shown, add their height to the total height
-    if (showPrior) {
-      const priorStopsHeight = service.priorStops.length * 20;
-      return totalHeight + priorStopsHeight + additionalHeight;
-    }
-
-    return totalHeight + additionalHeight;
-  };
-
   const priorPosition = (start, step, stops) => {
     return start + step * stops;
   };
 
-  const drawJourney = (service, start, finish) => {
+  const drawJourney = (service, start) => {
     const addLength = (service) => {
       if (service.origin.name === service.selected.name) return 1;
       else if (service.priorStops.length === 0) return 2;
       else return 3;
     };
 
-    const divider = showPrior
-      ? service.priorStops.length + service.followingStops.length + 3
-      : service.followingStops.length + addLength(service);
-
-    const step = (finish - start) / divider;
+    const step = 75;
 
     const priorMarker = showPrior
       ? priorPosition(start, step, service.priorStops.length + 1)
@@ -82,6 +65,11 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
     let psPosition = start;
     let msPosition = selected;
 
+    const stopLength = showPrior
+      ? service.followingStops.length + service.priorStops.length
+      : service.followingStops.length;
+    const finish = start + (stopLength + addLength(service)) * 75;
+
     let priorStops = service.priorStops.map((stop) => {
       psPosition += step;
       return { ...stop, point: psPosition };
@@ -93,25 +81,25 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
     });
 
     let namePosition = (id, platform) => {
-      console.log(id, platform);
       return platform === undefined ? id + 5 : id;
     };
 
+    console.log(midstops);
+
     return (
-      <svg width="100%" height="100%" viewBox={`0 0 800 ${finish + 20}`}>
+      <svg width="100%" height="100%" viewBox={`0 0 800 ${finish + 30}`}>
         {service.origin.name !== service.selected.name && (
           <>
             <line
               x1="75"
               y1={start}
               x2="75"
-              y2={selected}
+              y2={start + step}
               stroke="#6ca572"
               strokeWidth="7"
             />
-
             <text x="10" y={start}>
-              {service.origin.realTime}
+              {service.origin.bookedTime}
             </text>
             <circle
               cx="75"
@@ -135,8 +123,16 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
           <>
             {priorStops.map((ps) => (
               <>
+                <line
+                  x1="75"
+                  y1={ps.point}
+                  x2="75"
+                  y2={ps.point + step}
+                  stroke="#6ca572"
+                  strokeWidth="7"
+                />
                 <text x="10" y={ps.point}>
-                  {ps.realTime}
+                  {ps.bookedTime}
                 </text>
                 <circle
                   cx="75"
@@ -161,6 +157,14 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
 
         {service.priorStops.length > 0 && (
           <>
+            <line
+              x1="75"
+              y1={priorMarker}
+              x2="75"
+              y2={priorMarker + step}
+              stroke="#6ca572"
+              strokeWidth="7"
+            />
             <circle
               cx="75"
               cy={priorMarker}
@@ -177,18 +181,19 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
             </text>
           </>
         )}
-
+        {/* Draw selected stop */}
         <line
           x1="75"
           y1={selected}
           x2="75"
-          y2={finish}
+          y2={selected + step}
           stroke="#0b6a14"
           strokeWidth="7"
         />
-
-        {/* Draw selected stop */}
         <text x="10" y={selected}>
+          {service.selected.bookedTime}
+        </text>
+        <text x="10" y={selected + 15}>
           {service.selected.realTime}
         </text>
         <circle cx="75" cy={selected} r="13" fill="black" />
@@ -203,8 +208,16 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
 
         {midstops.map((ms) => (
           <>
+            <line
+              x1="75"
+              y1={ms.point}
+              x2="75"
+              y2={ms.point + step}
+              stroke="#0b6a14"
+              strokeWidth="7"
+            />
             <text x="10" y={ms.point}>
-              {ms.realTime}
+              {ms.bookedTime}
             </text>
             <circle cx="75" cy={ms.point} r="10" fill="black" />
             <text x="95" y={namePosition(ms.point, ms.platform)}>
@@ -220,7 +233,7 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
 
         {/* Draw end point */}
         <text x="10" y={finish}>
-          {service.destination.realTime}
+          {service.destination.bookedTime}
         </text>
         <circle cx="75" cy={finish} r="13" fill="black" />
         <text x="95" y={namePosition(finish, service.destination.platform)}>
@@ -246,15 +259,7 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
             </Box>
           </ThemeProvider>
         )}
-        {!loading && (
-          <div className="journey">
-            {drawJourney(
-              service,
-              30,
-              calculateSVGHeight(service, showPrior) * 6
-            )}
-          </div>
-        )}
+        {!loading && <div className="journey">{drawJourney(service, 30)}</div>}
       </div>
     </div>
   );
