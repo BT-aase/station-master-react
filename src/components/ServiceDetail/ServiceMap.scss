@@ -1,0 +1,81 @@
+.map{
+  width: 90vw;
+  max-width: 750px;
+  background-color: #fff;
+  margin-bottom: 10%;
+}
+
+.contain {
+  display: flex;
+  flex-direction: row;
+  margin-left: 3%;
+
+  &.origin{
+    padding-top: 3%;
+  }
+
+  &.destination{
+    padding-bottom: 3%;
+  }
+  
+  &:not(.destination){
+    margin-bottom: 5%;
+  }
+}
+
+.stopContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 20%;
+  min-width: 150px;
+}
+
+.timeContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.stopMarker {
+  width: var(--marker-size);
+  height: var(--marker-size);
+  margin-right: var(--adjust-margin);
+  background-color: black;
+  border-radius: 50%;
+  z-index: 1;
+  box-sizing: border-box;
+  
+  &.before{
+    background-color: white;
+    border: 5px solid #6ca572;
+  }
+}
+
+.stopContainer {
+  position: relative;
+}
+
+.lineSegment {
+  position: absolute;
+  top: 0.9375em;
+  left: 88%;
+  width: 7px;
+  height: 5em;
+
+  &.before {
+    background-color: #6ca572;
+  }
+
+  &.after {
+    background-color: #0b6a14;
+  }
+}
+
+.stationContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 2%;
+}
