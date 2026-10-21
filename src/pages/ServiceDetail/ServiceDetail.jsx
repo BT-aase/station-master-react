@@ -6,18 +6,28 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 import "./ServiceDetail.scss";
 import { getService } from "../../redux/actions/serviceActions";
-import ServiceMap from "../../components/ServiceDetail/ServiceMap";
+import ServiceList from "../../components/ServiceDetail/ServiceList/ServiceList";
 
 const ServiceDetail = ({ stationCode, serviceId }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const service = useSelector((state) => state.service.service);
 
   const savedService = JSON.parse(sessionStorage.getItem("selectedService"));
 
   useEffect(() => {
     setLoading(true);
-    dispatch(getService(stationCode, serviceId)).then(() => setLoading(false));
+    setError(false);
+
+    dispatch(getService(stationCode, serviceId))
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setError(true);
+      });
   }, [stationCode, serviceId, dispatch]);
 
   const theme = createTheme({
@@ -290,6 +300,15 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
   //   );
   // };
 
+  const hasValidServiceData =
+    service &&
+    typeof service === "object" &&
+    service.origin &&
+    service.selected &&
+    service.destination &&
+    Array.isArray(service.priorStops) &&
+    Array.isArray(service.followingStops);
+
   return (
     <div className="detail">
       <div className="header">{savedService}</div>
@@ -301,10 +320,19 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
             </Box>
           </ThemeProvider>
         )}
-        {/* {!loading && <div className="journey">{drawJourney(service, 30)}</div>} */}
-        {!loading && (
+        {!loading && error && (
           <div className="journey">
-            <ServiceMap service={service} />
+            <p>Unable to load service details.</p>
+          </div>
+        )}
+        {!loading && !error && hasValidServiceData && (
+          <div className="journey">
+            <ServiceList service={service} />
+          </div>
+        )}
+        {!loading && !error && !hasValidServiceData && (
+          <div className="journey">
+            <p>Service details unavailable.</p>
           </div>
         )}
       </div>

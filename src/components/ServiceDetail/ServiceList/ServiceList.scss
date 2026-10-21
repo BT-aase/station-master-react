@@ -1,4 +1,4 @@
-.map{
+.map {
   width: 90vw;
   max-width: 750px;
   background-color: #fff;
@@ -9,17 +9,15 @@
   display: flex;
   flex-direction: row;
   margin-left: 3%;
+  margin-bottom: 5%;
 
-  &.origin{
+
+  &:first-child {
     padding-top: 3%;
   }
 
-  &.destination{
+  &:last-child {
     padding-bottom: 3%;
-  }
-  
-  &:not(.destination){
-    margin-bottom: 5%;
   }
 }
 
@@ -36,6 +34,15 @@
 .timeContainer {
   display: flex;
   flex-direction: column;
+  font-weight: bold;
+}
+
+.onTime {
+  color: green;
+}
+
+.late {
+  color: red;
 }
 
 .stopMarker {
@@ -46,8 +53,8 @@
   border-radius: 50%;
   z-index: 1;
   box-sizing: border-box;
-  
-  &.before{
+
+  &.before {
     background-color: white;
     border: 5px solid #6ca572;
   }
@@ -71,6 +78,10 @@
   &.after {
     background-color: #0b6a14;
   }
+
+  &.departed{
+    height: 7em;
+  }
 }
 
 .stationContainer {
@@ -78,4 +89,8 @@
   flex-direction: column;
   justify-content: center;
   padding-left: 2%;
+}
+
+.stationName {
+  font-weight: bold;
 }
