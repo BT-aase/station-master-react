@@ -65,12 +65,7 @@ const App = () => {
             />
             <Route
               path="/station/:crs/service/:id"
-              element={
-                <ServiceDetail
-                  stationCode={stationCode}
-                  serviceId={serviceId}
-                />
-              }
+              element={<ServiceDetail />}
             />
           </Routes>
         </Router>

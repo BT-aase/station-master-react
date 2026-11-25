@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -8,19 +9,30 @@ import "./ServiceDetail.scss";
 import { getService } from "../../redux/actions/serviceActions";
 import ServiceList from "../../components/ServiceDetail/ServiceList/ServiceList";
 
-const ServiceDetail = ({ stationCode, serviceId }) => {
+const ServiceDetail = () => {
   const dispatch = useDispatch();
+  const { crs, id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const service = useSelector((state) => state.service.service);
 
-  const savedService = JSON.parse(sessionStorage.getItem("selectedService"));
+  const realTime = service?.selected?.realTime;
+  const selectedTime =
+    realTime && realTime !== "Unknown"
+      ? realTime
+      : service?.selected?.bookedTime;
+  const originName = service?.origin?.name;
+  const destinationName = service?.destination?.name;
+  const header =
+    selectedTime && originName && destinationName
+      ? `${selectedTime} ${originName} to ${destinationName}`
+      : "";
 
   useEffect(() => {
     setLoading(true);
     setError(false);
 
-    dispatch(getService(stationCode, serviceId))
+    dispatch(getService(crs, id))
       .then(() => {
         setLoading(false);
       })
@@ -28,7 +40,7 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
         setLoading(false);
         setError(true);
       });
-  }, [stationCode, serviceId, dispatch]);
+  }, [crs, id, dispatch]);
 
   const theme = createTheme({
     components: {
@@ -311,7 +323,7 @@ const ServiceDetail = ({ stationCode, serviceId }) => {
 
   return (
     <div className="detail">
-      <div className="header">{savedService}</div>
+      <div className="header">{header}</div>
       <div className="journeyContainer">
         {loading && (
           <ThemeProvider theme={theme}>

@@ -1,29 +1,25 @@
-
 import { FaBus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 import "./StationService.scss";
 
-const StationService = ({
-  service,
-  setServiceId,
-  type = "departures",
-}) => {
+const StationService = ({ service, setServiceId, type = "departures" }) => {
   const navigate = useNavigate();
   const isArrival = type === "arrivals";
 
   const handleServiceSelect = () => {
     const savedCode = sessionStorage.getItem("stationCode");
+    const stationCode = savedCode ? JSON.parse(savedCode) : "";
     const time = isArrival ? service.arrivalTime : service.departTime;
 
     setServiceId(service.uniqueIdentity);
 
     sessionStorage.setItem(
       "selectedService",
-      JSON.stringify(`${time} ${service.origin} to ${service.destination}`)
+      JSON.stringify(`${time} ${service.origin} to ${service.destination}`),
     );
 
-    navigate(`/station/${savedCode}/service/${service.uniqueIdentity}`);
+    navigate(`/station/${stationCode}/service/${service.uniqueIdentity}`);
   };
 
   const statusColor = (status = "") => {
@@ -57,9 +53,7 @@ const StationService = ({
           </div>
 
           <div className="leftMiddle">
-            {isArrival
-              ? `from ${service.origin}`
-              : `to ${service.destination}`}
+            {isArrival ? `from ${service.origin}` : `to ${service.destination}`}
           </div>
 
           <div className="leftBottom">{service.operator}</div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -7,19 +8,23 @@ import LinearProgress from "@mui/material/LinearProgress";
 import "./StationServices.scss";
 import { getServices } from "../../redux/actions/stationActions";
 import StationService from "../../components/StationServices/StationService";
+import stations from "../../stations.json";
 
-const StationServices = ({ stationName, stationCode, setServiceId }) => {
+const StationServices = ({ setServiceId }) => {
   const dispatch = useDispatch();
+  const { crs } = useParams();
   const [loading, setLoading] = useState(true);
   const [type, setType] = useState("departures");
   const services = useSelector((state) => state.station.services);
+  const station = stations.find((item) => item.crs === crs);
+  const stationName = station?.name;
 
   useEffect(() => {
     let active = true;
 
     setLoading(true);
 
-    dispatch(getServices(stationCode, type)).finally(() => {
+    dispatch(getServices(crs, type)).finally(() => {
       if (active) {
         setLoading(false);
       }
@@ -28,7 +33,7 @@ const StationServices = ({ stationName, stationCode, setServiceId }) => {
     return () => {
       active = false;
     };
-  }, [stationCode, type, dispatch]);
+  }, [crs, type, dispatch]);
 
   const theme = createTheme({
     components: {
